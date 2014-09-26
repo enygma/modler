@@ -250,3 +250,26 @@ print_r($filtered);
 In this case, we're checking to see if the `foo` array key is set. It's only set in the one case (with the value of "bar") so the resulting
 collection in `filtered` will only contain this one element. The callable function you pass in should take one parameter, the value, and
 should return a boolean for the pass/fail status of the check. Values cannot be modified through this method.
+
+### Slicing
+
+You can also get portions of the collection data without having to export it all using `toArray` and working with it there. The `slice` method
+makes it easy to get just the portion of the data you want. The first parameter is the start index and the second (optional) is how many items
+to return. It works using the [array_slice](http://php.net/array_slice) function.
+
+````php
+<?php
+
+$this->collection->add('foo');
+$this->collection->add('bar');
+$this->collection->add('baz');
+$this->collection->add('test');
+
+// This will return: array('bar', 'baz', 'test')
+$sliced = $this->collection->slice(1);
+
+// This will return: array('baz')
+$sliced = $this->collection->slice(2, 1);
+
+?>
+```
