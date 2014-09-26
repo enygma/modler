@@ -1,5 +1,4 @@
 <?php
-
 namespace Modler;
 
 class OtherModel extends \Modler\Model

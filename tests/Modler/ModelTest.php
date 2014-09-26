@@ -2,9 +2,6 @@
 
 namespace Modler;
 
-require_once __DIR__.'/../TestModel.php';
-require_once __DIR__.'/../OtherModel.php';
-
 class ModelTest extends \PHPUnit_Framework_TestCase
 {
     private $model;

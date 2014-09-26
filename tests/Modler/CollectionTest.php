@@ -2,9 +2,6 @@
 
 namespace Modler;
 
-require_once __DIR__.'/../TestCollection.php';
-require_once __DIR__.'/../TestModel.php';
-
 class CollectionTest extends \PHPUnit_Framework_TestCase
 {
     private $collection;
