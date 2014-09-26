@@ -6,6 +6,18 @@ Modler: a generic model layer for PHP
 Modler is a set of scripts that provide some of the most basic model and collection handling
 pieces of functionality.
 
+## Installation
+
+You can install the library via Composer (in your `composer.json` file):
+
+```
+{
+    "require": {
+        "enygma/modler": "1.0"
+    }
+}
+```
+
 ## Classes
 
 ### Model
