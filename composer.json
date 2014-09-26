@@ -1,0 +1,23 @@
+{
+    "name":"enygma/modler",
+    "type":"library",
+    "description":"A basic model library",
+    "keywords":["model"],
+    "homepage":"https://github.com/enygma/modler.git",
+    "license":"MIT",
+    "authors":[
+        {
+            "name":"Chris Cornutt",
+            "email":"ccornutt@phpdeveloper.org",
+            "homepage":"http://www.phpdeveloper.org/"
+        }
+    ],
+    "require":{
+        "php":">=5.3.1"
+    },
+    "autoload":{
+        "psr-0":{
+            "Modler":"src/"
+        }
+    }
+}
