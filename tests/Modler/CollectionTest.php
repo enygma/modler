@@ -154,4 +154,15 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
             array('baz')
         );
     }
+
+    /**
+     * Test the "contains" checking for the collections
+     */
+    public function testCollectionContains()
+    {
+        $this->collection->add('foo');
+        $this->collection->add('bar');
+
+        $this->assertTrue($this->collection->contains('bar'));
+    }
 }

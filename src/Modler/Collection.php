@@ -155,4 +155,20 @@ class Collection implements \Countable, \Iterator
         $end = ($items !== null) ? $items : count($this->data)-1;
         return array_slice($this->data, $start, $end);
     }
+
+    /**
+     * Check to see if the collection contains the given data
+     *
+     * @param mixed $data Data to locate
+     * @return boolean Found/not found result
+     */
+    public function contains($data)
+    {
+        foreach ($this->data as $item) {
+            if ($item == $data) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
