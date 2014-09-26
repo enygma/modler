@@ -111,6 +111,105 @@ You'd need to access properties on the returned model to get data from it.
 ### Collection
 
 The Collection class is designed to be a set of models. It's a generic container that can be
-iterated over.
+iterated over. There's no special logic in it that requires the contents to be a model (or even
+and object for that matter).
 
-@todo
+They're pretty straightforward to use:
+
+```php
+<?php
+
+$hats = new HatsCollection();
+$hats->add(array('test' => 'foo'));
+
+foreach ($hats as $value) {
+    print_r($value); // will output the "test" => "foo" data
+}
+
+echo 'Items in collection: '.count($hats)."\n";
+
+?>
+```
+
+There is one interesting thing that you can do with the Modler models if you use them in this collection. The example
+above mentions the `toArray` method on the Model class. The Collection has one too, but it includes an `expand` parameter.
+If this parameter is set to `true` (`false` by default) it will call the `toArray` method on each item in the collection and
+return those results. For example:
+
+```php
+<?php
+$hat1 = new HatModel();
+$hat1->type = 'fedora';
+
+$hat2 = new HatModel();
+$hat2->type = 'sombrero';
+
+$hats = new HatsCollection();
+$hats->add($hat1);
+$hats->add($hat2);
+
+$result = $hats->toArray(true);
+
+/**
+ * Result will be array(
+ *     array('type' => 'fedora'),
+ *     array('type' => 'sombrero')
+ * )
+ */
+?>
+```
+
+The `Hats` models will have the `toArray` called on them too, translating them into their array versions and appended for output.
+
+Much like in the models, custom collections methods will probbly not want to return a value. Insted they should populate out the data
+where they live. See the next section for an example that'll probably make more sense.
+
+## Combining them
+
+Lets combine them using the relations the models offer and populate a collection:
+
+```php
+<?php
+
+class HatsCollection extends \Modler\Collection
+{
+    public function findColorsByType($type)
+    {
+        foreach ($results as $result) {
+            $color = new \Modler\Color($result);
+            $this->add($color);
+        }
+    }
+}
+
+class HatModel extends \Modler\Model
+{
+    protected $properties = array(
+        'type' => array(
+            'description' => 'Hat Type',
+            'type' => 'varchar'
+        ),
+        'colors' => array(
+            'description' => 'Hat Colors',
+            'type' => 'relation',
+            'relation' => array(
+                'model' => '\\Modler\\HatsCollection',
+                'method' => 'findColorsByType',
+                'local' => 'type'
+            )
+        )
+    );
+}
+
+$hat = new HatModel();
+$hat->type = 'toque';
+
+// This returns a Hats Collection with the data populated
+$colors = $hat->colors;
+
+?>
+```
+
+Now when we access the `$hat->colors` property, we'll get back an instance in `$colors` of the `HatsCollection` with the data loaded.
+You can then use it just like a normal collection and use `toArray` on it to get the contents.
+
