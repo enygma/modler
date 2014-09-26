@@ -141,4 +141,10 @@ class Collection implements \Countable, \Iterator
         }
         return $self;
     }
+
+    public function slice($start, $items = null)
+    {
+        $end = ($items !== null) ? $items : count($this->data)-1;
+        return array_slice($this->data, $start, $end);
+    }
 }

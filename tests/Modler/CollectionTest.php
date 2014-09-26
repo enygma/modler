@@ -137,4 +137,24 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
             array(array('foo' => 'bar'))
         );
     }
+
+    /**
+     * Test the slicing of the collection data
+     */
+    public function testSliceCollection()
+    {
+        $this->collection->add('foo');
+        $this->collection->add('bar');
+        $this->collection->add('baz');
+        $this->collection->add('test');
+
+        $this->assertEquals(
+            $this->collection->slice(1),
+            array('bar', 'baz', 'test')
+        );
+        $this->assertEquals(
+            $this->collection->slice(2, 1),
+            array('baz')
+        );
+    }
 }
