@@ -121,4 +121,24 @@ class Collection implements \Countable, \Iterator
             return $this->data;
         }
     }
+
+    /**
+     * Filter the collection by the boolean return values
+     *     in a callable function
+     *
+     * @param callable $function Filtering function
+     * @return \Modler\Collection instance
+     */
+    public function filter(callable $function)
+    {
+        $class = get_class();
+        $self = new $class();
+
+        foreach ($this->data as $data) {
+            if ($function($data) == true) {
+                $self->add($data);
+            }
+        }
+        return $self;
+    }
 }

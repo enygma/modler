@@ -227,3 +227,26 @@ $colors = $hat->colors;
 Now when we access the `$hat->colors` property, we'll get back an instance in `$colors` of the `HatsCollection` with the data loaded.
 You can then use it just like a normal collection and use `toArray` on it to get the contents.
 
+### Filtering
+
+Collections also allow you to do some basic filtering based on custom logic. You can use the `filter` method to to a pass/fail check on the
+data and add/remove things from the collection. Here's an example:
+
+```php
+<?php
+
+$this->collection->add(array('foo' => 'bar'));
+$this->collection->add(array('baz' => 'test'));
+
+$filtered = $this->collection->filter(function($value) {
+    return (isset($value['foo']));
+});
+
+print_r($filtered);
+
+?>
+```
+
+In this case, we're checking to see if the `foo` array key is set. It's only set in the one case (with the value of "bar") so the resulting
+collection in `filtered` will only contain this one element. The callable function you pass in should take one parameter, the value, and
+should return a boolean for the pass/fail status of the check. Values cannot be modified through this method.

@@ -119,4 +119,22 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
             $this->collection->toArray()
         );
     }
+
+    /**
+     * Test that the filter handling works as expected
+     */
+    public function testFilterByValue()
+    {
+        $this->collection->add(array('foo' => 'bar'));
+        $this->collection->add(array('baz' => 'test'));
+
+        $filtered = $this->collection->filter(function($value) {
+            return (isset($value['foo']));
+        });
+
+        $this->assertEquals(
+            $filtered->toArray(),
+            array(array('foo' => 'bar'))
+        );
+    }
 }
