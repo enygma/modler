@@ -129,7 +129,7 @@ class Collection implements \Countable, \Iterator
      * @param callable $function Filtering function
      * @return \Modler\Collection instance
      */
-    public function filter(callable $function)
+    public function filter($function)
     {
         $class = get_class();
         $self = new $class();
