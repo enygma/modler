@@ -13,7 +13,7 @@ You can install the library via Composer (in your `composer.json` file):
 ```
 {
     "require": {
-        "enygma/modler": "1.0"
+        "enygma/modler": "1.*"
     }
 }
 ```
