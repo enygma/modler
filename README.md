@@ -1,6 +1,8 @@
 Modler: a generic model layer for PHP
 =============
 
+[![Build Status](https://secure.travis-ci.org/enygma/modler.png?branch=master)](http://travis-ci.org/enygma/modler)
+
 Modler is a set of scripts that provide some of the most basic model and collection handling
 pieces of functionality.
 
