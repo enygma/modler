@@ -1,5 +1,4 @@
 <?php
-
 namespace Modler;
 
 class TestModel extends \Modler\Model
