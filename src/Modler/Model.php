@@ -182,7 +182,7 @@ class Model
      */
     public function addProperty($name, array $config, $override = false)
     {
-        if (array_key_exists($name, $this->properties) && $override == false) {
+        if (array_key_exists($name, $this->properties) && $override === false) {
             throw new \InvalidArgumentException('Property name "'.$name.'" already exists');
         }
         $this->properties[$name] = $config;
