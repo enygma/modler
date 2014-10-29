@@ -60,7 +60,7 @@ class Model
 
         // See if it's a relation
         if (isset($property['type']) && strtolower($property['type']) == 'relation') {
-            return $this->handleRelation($property, $name);
+            return $this->handleRelation($property);
         }
 
         // If not, probably just a value - return that (or null)
@@ -72,10 +72,9 @@ class Model
      * Handle a relational mapping in a model
      *
      * @param array $property Property configuration
-     * @param string $name Property name
      * @return object Instance of relation object (model/collection)
      */
-    public function handleRelation($property, $name)
+    public function handleRelation($property)
     {
         $model = $property['relation']['model'];
         $method = $property['relation']['method'];
