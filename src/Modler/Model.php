@@ -60,28 +60,40 @@ class Model
 
         // See if it's a relation
         if (isset($property['type']) && strtolower($property['type']) == 'relation') {
-            $model = $property['relation']['model'];
-            $method = $property['relation']['method'];
-            $local = $property['relation']['local'];
-
-            if (!class_exists($model)) {
-                throw new \InvalidArgumentException('Model "'.$model.'" does not exist');
-            }
-
-            $instance = new $model();
-            if (!method_exists($instance, $method)) {
-                throw new \InvalidArgumentException('Method "'.$method.'" does not exist on model '.get_class($instance));
-            }
-            $params = array(
-                (isset($this->values[$name])) ? $this->values[$name] : null
-            );
-            call_user_func_array(array($instance, $method), $params);
-            return $instance;
+            return $this->handleRelation($property, $name);
         }
 
         // If not, probably just a value - return that (or null)
         return (array_key_exists($name, $this->values))
             ? $this->values[$name] : null;
+    }
+
+    /**
+     * Handle a relational mapping in a model
+     *
+     * @param array $property Property configuration
+     * @param string $name Property name
+     * @return object Instance of relation object (model/collection)
+     */
+    public function handleRelation($property, $name)
+    {
+        $model = $property['relation']['model'];
+        $method = $property['relation']['method'];
+        $local = $property['relation']['local'];
+
+        if (!class_exists($model)) {
+            throw new \InvalidArgumentException('Model "'.$model.'" does not exist');
+        }
+
+        $instance = new $model();
+        if (!method_exists($instance, $method)) {
+            throw new \InvalidArgumentException('Method "'.$method.'" does not exist on model '.get_class($instance));
+        }
+        $params = array(
+            (isset($this->values[$name])) ? $this->values[$name] : null
+        );
+        call_user_func_array(array($instance, $method), $params);
+        return $instance;
     }
 
     /**
