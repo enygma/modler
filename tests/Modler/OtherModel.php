@@ -11,6 +11,6 @@ class OtherModel extends \Modler\Model
 
     public function callMeMaybe($test)
     {
-        $this->setValue('test', 'foobarbaz');
+        $this->setValue('test', 'foobarbaz - '.$test);
     }
 }

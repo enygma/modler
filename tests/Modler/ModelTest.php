@@ -152,10 +152,11 @@ class ModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetRelationValid()
     {
+        $this->model->test = 'woo';
         $result = $this->model->relateToMe;
 
         $this->assertEquals(get_class($result), 'Modler\\OtherModel');
-        $this->assertEquals($result->test, 'foobarbaz');
+        $this->assertEquals($result->test, 'foobarbaz - woo');
     }
 
     /**

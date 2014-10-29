@@ -90,7 +90,7 @@ class Model
             throw new \InvalidArgumentException('Method "'.$method.'" does not exist on model '.get_class($instance));
         }
         $params = array(
-            (isset($this->values[$name])) ? $this->values[$name] : null
+            (isset($this->values[$local])) ? $this->values[$local] : null
         );
         call_user_func_array(array($instance, $method), $params);
         return $instance;
