@@ -95,11 +95,11 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         $this->collection->add(array('foo' => 'bar'));
         $this->collection->add(array('baz' => 'test'));
 
-        $count = 0;
-        foreach ($this->collection as $index => $value) {
-            $count++;
+        $count = array();
+        foreach ($this->collection as $value) {
+            $count[] = $value;
         }
-        $this->assertEquals(2, $count);
+        $this->assertEquals(2, count($count));
     }
 
     /**
