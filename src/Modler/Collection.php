@@ -107,7 +107,7 @@ class Collection implements \Countable, \Iterator
      */
     public function toArray($expand = false)
     {
-        if ($expand == true) {
+        if ($expand === true) {
             $result = array();
             foreach ($this->data as $index => $value) {
                 if (is_object($value) && method_exists($value, 'toArray')) {
@@ -135,7 +135,7 @@ class Collection implements \Countable, \Iterator
         $self = new $class();
 
         foreach ($this->data as $data) {
-            if ($function($data) == true) {
+            if ($function($data) === true) {
                 $self->add($data);
             }
         }
