@@ -89,12 +89,12 @@ class Collection implements \Countable, \Iterator
     /**
      * Remove an item from the collection by index ID
      *
-     * @param integer $id Item ID
+     * @param integer $dataId Item ID
      */
-    public function remove($id)
+    public function remove($dataId)
     {
-        if (array_key_exists($id, $this->data)) {
-            unset($this->data[$id]);
+        if (array_key_exists($dataId, $this->data)) {
+            unset($this->data[$dataId]);
         }
     }
 
@@ -109,7 +109,7 @@ class Collection implements \Countable, \Iterator
     {
         if ($expand === true) {
             $result = array();
-            foreach ($this->data as $index => $value) {
+            foreach ($this->data as $value) {
                 if (is_object($value) && method_exists($value, 'toArray')) {
                     $result[] = $value->toArray();
                 } else {
