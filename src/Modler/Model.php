@@ -84,7 +84,7 @@ class Model
             throw new \InvalidArgumentException('Model "'.$model.'" does not exist');
         }
 
-        $instance = new $model();
+        $instance = $this->makeModelInstance($model);
         if (!method_exists($instance, $method)) {
             throw new \InvalidArgumentException('Method "'.$method.'" does not exist on model '.get_class($instance));
         }
@@ -92,6 +92,18 @@ class Model
             (isset($this->values[$local])) ? $this->values[$local] : null
         );
         call_user_func_array(array($instance, $method), $params);
+        return $instance;
+    }
+
+    /**
+     * Make a new model instance
+     *
+     * @param string $model Model namespace "path"
+     * @return object Model instance
+     */
+    public function makeModelInstance($model)
+    {
+        $instance = new $model();
         return $instance;
     }
 
