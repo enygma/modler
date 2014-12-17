@@ -91,8 +91,13 @@ class Model
         $params = array(
             (isset($this->values[$local])) ? $this->values[$local] : null
         );
-        call_user_func_array(array($instance, $method), $params);
-        return $instance;
+        $result = call_user_func_array(array($instance, $method), $params);
+
+        if (isset($property['relation']['model']) && $property['relation']['model'] === 'value') {
+            return $result;
+        } else {
+            return $instance;
+        }
     }
 
     /**
