@@ -93,7 +93,7 @@ class Model
         );
         $result = call_user_func_array(array($instance, $method), $params);
 
-        if (isset($property['relation']['model']) && $property['relation']['model'] === 'value') {
+        if (isset($property['relation']['return']) && $property['relation']['return'] === 'value') {
             return $result;
         } else {
             return $instance;
@@ -228,5 +228,26 @@ class Model
     public function toArray()
     {
         return $this->values;
+    }
+
+    /**
+     * Verify that all required values are set
+     *
+     * @param array $ignore Ignore properties list
+     * @throws \InvalidArgumentException If required permission is not set
+     * @return boolean True if verification is successful
+     */
+    public function verify(array $ignore = array())
+    {
+        $properties = $this->getProperties();
+        foreach ($properties as $name => $config) {
+            if (in_array($name, $ignore)) {
+                continue;
+            }
+            if ((isset($config['required']) && $config['required'] === true) && !isset($this->values[$name])) {
+                throw new \InvalidArgumentException('Property "'.$name.'" is required!');
+            }
+        }
+        return true;
     }
 }
