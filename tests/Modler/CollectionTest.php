@@ -35,6 +35,19 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test the iteration of the collection
+     */
+    public function testIterateCollection()
+    {
+        $this->collection->add('foo');
+        $this->collection->add('bar');
+
+        foreach ($this->collection as $index => $value) {
+            $this->assertTrue(in_array($index, array(0, 1)));
+        }
+    }
+
+    /**
      * Test the return of a collection values as an array
      */
     public function testCollectionToArray()
@@ -164,5 +177,16 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         $this->collection->add('bar');
 
         $this->assertTrue($this->collection->contains('bar'));
+    }
+
+    /**
+     * Test that the collection does not contain the value
+     */
+    public function testCollectionDoesNotContain()
+    {
+        $this->collection->add('foo');
+        $this->collection->add('bar');
+
+        $this->assertFalse($this->collection->contains('baz'));
     }
 }
