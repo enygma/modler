@@ -141,7 +141,8 @@ class TestModel extends \Modler\Model
         'relation' => array(
             'model' => '\\MyApp\\OtherModel',
             'method' => 'findByTestReturnValue',
-            'local' => 'test'
+            'local' => 'test',
+            'return' => 'value'
         )
     )
 }
