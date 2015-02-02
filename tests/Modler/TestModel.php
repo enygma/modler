@@ -7,12 +7,25 @@ class TestModel extends \Modler\Model
         'test' => array(
             'description' => 'Test Property'
         ),
+        'imRequired' => array(
+            'description' => 'Required Property #1',
+            'required' => true
+        ),
         'relateToMe' => array(
             'type' => 'relation',
             'relation' => array(
                 'model' => '\\Modler\\OtherModel',
                 'method' => 'callMeMaybe',
                 'local' => 'test'
+            )
+        ),
+        'relateToMeValue' => array(
+            'type' => 'relation',
+            'relation' => array(
+                'model' => '\\Modler\\OtherModel',
+                'method' => 'callMeReturnValue',
+                'local' => 'test',
+                'return' => 'value'
             )
         ),
         'badModel' => array(
