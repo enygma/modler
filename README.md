@@ -63,6 +63,8 @@ $model->test = 'foo';
 ?>
 ```
 
+#### Relational Properties
+
 The relational property `relateMe` is a little more complicated. It's defined as a type of "relation" and the `relation`
 configuration contains three pieces of information:
 
@@ -121,6 +123,88 @@ class OtherModel extends \Modler\Model
 Remember, when you use the properties, you're going to get back the updated model instance, not the return value for the method that was called.
 You'd need to access properties on the returned model to get data from it.
 
+#### Relations "Return Value"
+
+You can also have a relation return a value instead of an instance of a class or model. To do so, just set the `return` value to "value" and use the normal `return` from your method:
+
+```php
+<?php
+class TestModel extends \Modler\Model
+{
+    'property1' => array(
+        'description' => 'Property #1',
+        'type' => 'varchar'
+    ),
+    'relateMe' => array(
+        'description' => 'Return by value relation',
+        'type' => 'relation',
+        'relation' => array(
+            'model' => '\\MyApp\\OtherModel',
+            'method' => 'findByTestReturnValue',
+            'local' => 'test'
+        )
+    )
+}
+
+class OtherModel extends \Modler\Model
+{
+    public function findByTestReturnValue($property1)
+    {
+        return 'this is a value';
+    }
+}
+
+// Then, in the "relateMe" property we'd get...
+if ($testModel->relateMe === 'this is a value') {
+    echo 'Valid match!';
+}
+
+?>
+```
+
+In this case we're calling `\MyApp\OtherModel::findByTestReturnValue` and asking for a return value rather than getting back the model with a value set.
+
+#### Data Verification
+
+Modeler can also do some simple data verification around required values. You can set the required state in the property configuration:
+
+```php
+<?php
+class OtherModel extends \Modler\Model
+{
+    protected $properties = array(
+        'prop1' => array(
+            'description' => 'Property #1 (Required)',
+            'type' => 'varchar',
+            'required' => true
+        )
+    );
+}
+
+$other = new OtherModel();
+try {
+    $other->verify();
+} catch (\Exception $e) {
+    echo 'ERROR: '.$e->getMessage();
+}
+?>
+```
+
+If a value is not set (checked with `isset`) an exception will be thrown with information on which property was missing. If you ever find a place where you're getting an exception but you want a value ignored from the verification, you can use the optional parameter to the `verify` method:
+
+```
+<?php
+
+$ignore = array('prop1');
+try {
+    $other->verify($ignore);
+    echo 'Success!';
+} catch (\Exception $e) {
+    echo 'Never gets here.';
+}
+
+?>
+```
 
 ### Collection
 
