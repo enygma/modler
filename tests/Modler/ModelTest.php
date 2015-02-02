@@ -160,6 +160,17 @@ class ModelTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test that the "return value" works correctly
+     */
+    public function testGetRelationReturnValue()
+    {
+        $this->model->test = 'woo';
+        $result = $this->model->relateToMeValue;
+
+        $this->assertEquals($result, 'this is a value: woo');
+    }
+
+    /**
      * Test that an exception is thrown when a bad model is named in
      *     the relationship
      *
@@ -179,5 +190,33 @@ class ModelTest extends \PHPUnit_Framework_TestCase
     public function testGetRelationInvalidMethod()
     {
         $this->model->badMethod;
+    }
+
+    /**
+     * Test that, when the required field is set, verification passes
+     */
+    public function testVerifyPass()
+    {
+        $this->model->imRequired = 'test';
+        $this->model->verify();
+    }
+
+    /**
+     * Test that when the required field is missing, an exception is thrown
+     *
+     * @expectedException \InvalidArgumentException
+     */
+    public function testVerifyFail()
+    {
+        $this->model->verify();
+    }
+
+    /**
+     * Test the "ignore" property handling
+     */
+    public function testVerifyIgnorePass()
+    {
+        $ignore = array('imRequired');
+        $this->model->verify($ignore);
     }
 }
