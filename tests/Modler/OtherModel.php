@@ -13,4 +13,9 @@ class OtherModel extends \Modler\Model
     {
         $this->setValue('test', 'foobarbaz - '.$test);
     }
+
+    public function callMeReturnValue($test)
+    {
+        return 'this is a value: '.$test;
+    }
 }
