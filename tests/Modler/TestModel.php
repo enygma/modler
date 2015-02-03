@@ -44,5 +44,14 @@ class TestModel extends \Modler\Model
                 'local' => 'badProperty'
             )
         ),
+        'testValidate' => array(
+            'type' => 'string',
+            'description' => 'Checking for validation method'
+        )
     );
+
+    public function validateTestvalidate($value)
+    {
+        return ($value === 'test1234');
+    }
 }

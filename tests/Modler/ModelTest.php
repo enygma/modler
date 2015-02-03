@@ -219,4 +219,28 @@ class ModelTest extends \PHPUnit_Framework_TestCase
         $ignore = array('imRequired');
         $this->model->verify($ignore);
     }
+
+    /**
+     * Test that the validation passes with the correct (matching) value
+     */
+    public function testValidateMethodPass()
+    {
+        $this->model->imRequired = 'test';
+        $this->model->testValidate = 'test1234';
+
+        $this->assertTrue($this->model->verify());
+    }
+
+    /**
+     * Test the exception thrown when the property validation fails
+     *
+     * @expectedException \InvalidArgumentException
+     */
+    public function testValidateMethodFail()
+    {
+        $this->model->imRequired = 'test';
+        $this->model->testValidate = '1234test';
+
+        $this->model->verify();
+    }
 }
