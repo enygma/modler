@@ -247,6 +247,12 @@ class Model
             if ((isset($config['required']) && $config['required'] === true) && !isset($this->values[$name])) {
                 throw new \InvalidArgumentException('Property "'.$name.'" is required!');
             }
+            $validateMethod = 'validate'.ucwords(strtolower($name));
+            if (method_exists($this, $validateMethod) && isset($this->values[$name])) {
+                if ($this->$validateMethod($this->values[$name]) === false) {
+                    throw new \InvalidArgumentException('Invalid value for property "'.$name.'"!');
+                }
+            }
         }
         return true;
     }
