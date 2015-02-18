@@ -2,7 +2,7 @@
 
 namespace Modler;
 
-class Collection implements \Countable, \Iterator
+class Collection implements \Countable, \Iterator, \ArrayAccess
 {
     /**
      * Current set of data for collection
@@ -74,6 +74,51 @@ class Collection implements \Countable, \Iterator
     public function valid()
     {
         return isset($this->data[$this->position]);
+    }
+
+    /**
+     * Check to see if an offset exists (ArrayAccess)
+     *
+     * @param integer|string $offset Offset
+     * @return boolean Offset exists
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->data[$offset]);
+    }
+
+    /**
+     * Get the value for the offset (ArrayAccess)
+     *
+     * @param integer|string $offset Offset
+     * @return mixed Offset value
+     */
+    public function offsetGet($offset)
+    {
+        return $this->data[$offset];
+    }
+
+    /**
+     * Set a value on the given offset
+     *
+     * @param integer|seting $offset Offset
+     * @param mixed $value Value to set to offset
+     */
+    public function offsetSet($offset, $value)
+    {
+        $this->data[$offset] = $value;
+    }
+
+    /**
+     * Unset an offset if it exists
+     *
+     * @param integer|seting $offset Offset
+     */
+    public function offsetUnset($offset)
+    {
+        if (isset($this->data[$offset])) {
+            unset($this->data[$offset]);
+        }
     }
 
     /**
