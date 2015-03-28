@@ -243,4 +243,39 @@ class ModelTest extends \PHPUnit_Framework_TestCase
 
         $this->model->verify();
     }
+
+    /**
+     * Try to set a guarded value on load
+     */
+    public function testSetGuardedOnLoad()
+    {
+        $data = array('guarded' => 'this will not work');
+        $this->model->load($data);
+
+        $this->assertNull($this->model->guarded);
+    }
+
+    /**
+     * Try to set a guarded value as a property
+     */
+    public function testSetGuardedProperty()
+    {
+        $this->model->guarded = 'this will not work either';
+        $this->assertNull($this->model->guarded);
+    }
+
+    /**
+     * Test the "enforce guard" parameter on the load
+     *     This allows us to override the check (useful for database loads)
+     */
+    public function testSetGuardedOnLoadNotEnforced()
+    {
+        $data = array('guarded' => 'this will work this time');
+        $this->model->load($data, false);
+
+        $this->assertEquals(
+            $this->model->guarded,
+            $data['guarded']
+        );
+    }
 }

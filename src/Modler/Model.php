@@ -41,7 +41,12 @@ class Model
         if (!$this->isProperty($name)) {
             throw new \InvalidArgumentException('Property name "'.$name.'" not found');
         }
-        $this->values[$name] = $value;
+        $property = $this->properties[$name];
+        if (!isset($property['guarded'])
+            || (isset($property['guarded']) && $property['guarded'] = false)
+        ) {
+            $this->values[$name] = $value;
+        }
     }
 
     /**
@@ -210,12 +215,21 @@ class Model
      *
      * @param array $data Data to load
      */
-    public function load(array $data)
+    public function load(array $data, $enforceGuard = true)
     {
         foreach ($data as $name => $value)
         {
             if (array_key_exists($name, $this->properties)) {
-                $this->setValue($name, $value);
+                $property = $this->properties[$name];
+                if ($enforceGuard === true) {
+                    if (!isset($property['guarded'])
+                        || (isset($property['guarded']) && $property['guarded'] = false)
+                    ) {
+                        $this->setValue($name, $value);
+                    }
+                } else {
+                    $this->setValue($name, $value);
+                }
             }
         }
     }

@@ -47,6 +47,10 @@ class TestModel extends \Modler\Model
         'testValidate' => array(
             'type' => 'string',
             'description' => 'Checking for validation method'
+        ),
+        'guarded' => array(
+            'type' => 'string',
+            'guarded' => true
         )
     );
 
