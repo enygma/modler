@@ -278,4 +278,14 @@ class ModelTest extends \PHPUnit_Framework_TestCase
             $data['guarded']
         );
     }
+
+    /**
+     * Test the removal of values through a "filter" in the toArray method
+     */
+    public function testFilterRemoveValues()
+    {
+        $this->model->test = 'foobar';
+        $filter = array('test');
+        $this->assertEmpty($this->model->toArray($filter));
+    }
 }

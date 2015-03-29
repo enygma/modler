@@ -358,3 +358,82 @@ $sliced = $this->collection->slice(2, 1);
 
 ?>
 ```
+
+### Guarding and Array Filtering
+
+`Modler` also includes two other concepts around the contents of the model data: guarding and filtering (not the same as the `filter` method above).
+
+**Guarding** lets you protect properties from being set when the `load` method is called or when set as a property on the object. This helps to prevent mass assignment security issues. For example, we make a model with two properties and guard the `id` value so it can never be overriden:
+
+```php
+<?php
+
+class HatModel extends \Modler\Model
+{
+    protected $properties = array(
+        'id' => array(
+            'description' => 'Hat ID',
+            'type' => 'integer',
+            'guard' => true
+        ),
+        'type' => array(
+            'description' => 'Hat Type',
+            'type' => 'varchar'
+        )
+    );
+}
+
+// Now if we try to set it...
+$hat = new HatModel();
+$hat->id = 1234;
+
+var_export($hat->id); // result is NULL
+
+// Calling load has the same effect
+$hat->load(array('id' => 1234));
+
+?>
+```
+
+There is a second optional paramater for the `load` method that turns off this guarding and allows the setting of all values (useful when loading objects from a datasource):
+
+```php
+<?php
+
+$data = array('id' => 1234);
+$hat->load($data, false);
+
+var_export($hat->id); // result is 1234
+?>
+```
+
+The other feature, array filtering, works with the `toArray` method and lets you filter out values when you call it. This can be useful if you have an object with sensitive data like password hashes that don't need to be stored. Here's an example:
+
+```php
+<?php
+
+class UserModel extends \Modler\Model
+{
+    protected $properties = array(
+        'username' => array(
+            'description' => 'Username',
+            'type' => 'varchar'
+        ),
+        'password' => array(
+            'description' => 'Password',
+            'type' => 'varchar'
+        )
+    );
+}
+
+// To get the result without the password, we call it with the filter paramater
+$user = new UserModel(
+    array('username' => 'foobar', 'password' => password_hash('foobar'))
+);
+
+$result = $user->toArray(array('password'));
+print_r($result); // results in an array with just array('username' => 'foobar')
+?>
+```
+
+

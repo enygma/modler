@@ -237,11 +237,18 @@ class Model
     /**
      * Return the current set of values in an array
      *
+     * @param array $filter Values to filter from the return
      * @return array Current values
      */
-    public function toArray()
+    public function toArray($filter = array())
     {
-        return $this->values;
+        $values = $this->values;
+        foreach ($filter as $name) {
+            if (isset($values[$name])) {
+                unset($values[$name]);
+            }
+        }
+        return $values;
     }
 
     /**
