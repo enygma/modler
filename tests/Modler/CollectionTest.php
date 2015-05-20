@@ -189,4 +189,61 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($this->collection->contains('baz'));
     }
+
+    /**
+     * Test the "take" method on a collection
+     */
+    public function testLimitWithTake()
+    {
+        $data = array('foo', 'bar', 'baz', 'quux', 'foobar', 'barbaz');
+        foreach ($data as $value) {
+            $this->collection->add($value);
+        }
+
+        $collection = $this->collection->take(3);
+
+        $this->assertEquals(3, count($collection));
+        $this->assertEquals(
+            array('foo', 'bar', 'baz'),
+            $collection->toArray()
+        );
+    }
+
+    /**
+     * Test the default sorting (as string), descending
+     */
+    public function testOrderStringDataDefaultSort()
+    {
+        $data = array('foo', 'bar', 'quux', 'baz', 'foobar', 'barbaz');
+        foreach ($data as $value) {
+            $this->collection->add($value);
+        }
+
+        $collection = $this->collection->order();
+
+        $this->assertEquals(
+            array('bar', 'barbaz', 'baz', 'foo', 'foobar', 'quux'),
+            $collection->toArray()
+        );
+    }
+
+    /**
+     * Test the order by a property with the default sort (well, DESC is default)
+     */
+    public function testOrderObjectPropertyDefaultSort()
+    {
+        $data = array('foo', 'bar', 'quux', 'baz', 'foobar', 'barbaz');
+        foreach ($data as $value) {
+            $object = new \stdClass();
+            $object->test = $value;
+            $this->collection->add($object);
+        }
+
+        $collection = $this->collection->order(TestCollection::SORT_DESC, 'test');
+
+        $this->assertEquals(6, count($collection));
+        $this->assertEquals('bar', $collection[0]->test);
+        $this->assertEquals('foo', $collection[3]->test);
+        $this->assertEquals('quux', $collection[5]->test);
+    }
 }

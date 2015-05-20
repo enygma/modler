@@ -436,4 +436,85 @@ print_r($result); // results in an array with just array('username' => 'foobar')
 ?>
 ```
 
+### Array "taking" and ordering
+
+There's also a similar interface to the `slice` method on Modler collections called `take`. With slice you can get more specific with the section of the results but if you need something simpler, you can just "take" a few off the top:
+
+```php
+<?php
+// Add a bunch of items to our collection
+$data = array('foo', 'bar', 'baz', 'quux', 'foobar', 'barbaz');
+$collection = new \Modler\Collection();
+foreach ($data as $value) {
+    $collection->add($value);
+}
+
+// You can limit the current collection and return
+$collection = $collection->take(3);
+
+ // this returns 3
+echo 'count: '.count($collection);
+
+// This returns Array('foo', 'bar', 'baz')
+print_r($collection->toArray());
+
+?>
+```
+
+**NOTE:** The collection returned is a new instance. The data in the previous collection is untouched.
+
+You can also *sort* the data in the current collection (this does modify the collection dataset) either as a set of strings or by a property on an object. First, as strings:
+
+```php
+<?php
+// Add a bunch of items to our collection
+$data = array('foo', 'bar', 'baz', 'quux', 'foobar', 'barbaz');
+$collection = new \Modler\Collection();
+foreach ($data as $value) {
+    $collection->add($value);
+}
+
+$collection->order();
+
+// returns Array('bar', 'barbaz', 'baz', 'foo', 'foobar', 'quux');
+print_r($collection->toArray());
+?>
+```
+
+The default sort order is descending, but you can tell it to sort ascending:
+
+```php
+<?php
+$collection->order(\Modler\Collection::SORT_ASC);
+?>
+```
+
+And, if you want to sort objects, you provide the name of the property as the second parameter:
+
+```php
+<?php
+// Add a bunch of items to our collection
+$data = array('foo', 'bar', 'baz', 'quux', 'foobar', 'barbaz');
+$collection = new \Modler\Collection();
+foreach ($data as $value) {
+    $collection->add($value);
+}
+
+$collection->order(\Modler\Collection::SORT_DESC, 'test');
+
+/**
+ * Returns set of objects ex:
+ * [0] => stdClass Object
+ *  ( [test] => bar )
+ *
+ * [1] => stdClass Object
+ *  ( [test] => barbaz )
+ *
+ * [2] => stdClass Object
+ *  ( [test] => baz )
+ */
+print_r($collection->toArray());
+?>
+```
+
 

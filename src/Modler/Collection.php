@@ -4,6 +4,9 @@ namespace Modler;
 
 class Collection implements \Countable, \Iterator, \ArrayAccess
 {
+    const SORT_ASC = 'asc';
+    const SORT_DESC = 'desc';
+
     /**
      * Current set of data for collection
      * @var array
@@ -15,6 +18,23 @@ class Collection implements \Countable, \Iterator, \ArrayAccess
      * @var integer
      */
     private $position = 0;
+
+    public function __construct(array $data = array())
+    {
+        if (!empty($data)) {
+            $this->setData($data);
+        }
+    }
+
+    /**
+     * Set the current data for the collection
+     *
+     * @param array $data Data to assign to the collection
+     */
+    private function setData(array $data)
+    {
+        $this->data = $data;
+    }
 
     // For Countable interface
     /**
@@ -215,5 +235,44 @@ class Collection implements \Countable, \Iterator, \ArrayAccess
             }
         }
         return false;
+    }
+
+    /**
+     * Alias to the "slice" function but a bit simpler
+     *
+     * @param integer $limit Number of times to reduce down to
+     * @return \Modeler\Collection Collection instance
+     */
+    public function take($limit)
+    {
+        $data = $this->slice(0, $limit);
+        $collection = new Collection($data);
+        return $collection;
+    }
+
+    public function order($direction = null, $property = null)
+    {
+        $direction = ($direction === null || $direction === self::SORT_DESC)
+            ? self::SORT_DESC : self::SORT_ASC;
+        $data = $this->data;
+
+        if ($property !== null) {
+            // sort by the property value
+            $values = array();
+            foreach ($data as $index => $item) {
+                $values[$index] = $item->$property;
+            }
+            ($direction === self::SORT_DESC) ? asort($values) : arsort($values);
+            $sorted = array();
+            foreach ($values as $index => $item) {
+                $sorted[] = $data[$index];
+            }
+            $data = $sorted;
+        } else {
+            // sort as strings
+            ($direction === self::SORT_DESC) ? sort($data) : rsort($data);
+        }
+        $this->setData($data);
+        return $this;
     }
 }
