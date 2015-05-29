@@ -250,6 +250,14 @@ class Collection implements \Countable, \Iterator, \ArrayAccess
         return $collection;
     }
 
+    /**
+     * Sort the collection based on the value of the property defined
+     *     and the direction given
+     *
+     * @param string $direction Direction constant value (SORT_ASC/SORT_DESC)
+     * @param string $property Property name
+     * @return object Modler\Collection instance
+     */
     public function order($direction = null, $property = null)
     {
         $direction = ($direction === null || $direction === self::SORT_DESC)
