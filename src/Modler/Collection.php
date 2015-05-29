@@ -27,6 +27,26 @@ class Collection implements \Countable, \Iterator, \ArrayAccess
     }
 
     /**
+     * Magic method to catch get* calls to fetch a set of property values
+     *
+     * @param string $name Function name called
+     * @param array $args Arguments
+     * @return null|array Results if found, null if not
+     */
+    public function __call($name, array $args)
+    {
+        // If it starts with get*
+        if (strpos($name, 'get') === 0) {
+            $property = lcfirst(str_replace('get', '', $name));
+            $results = array();
+            foreach ($this->data as $item) {
+                $results[] = $item->$property;
+            }
+            return $results;
+        }
+    }
+
+    /**
      * Set the current data for the collection
      *
      * @param array $data Data to assign to the collection
