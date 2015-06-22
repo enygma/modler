@@ -303,4 +303,42 @@ class Collection implements \Countable, \Iterator, \ArrayAccess
         $this->setData($data);
         return $this;
     }
+
+    /**
+     * Find match(es) in the current set of data based on
+     *     the provided proprty and value
+     *
+     * @param string $property Proprty name to match on
+     * @param mixed $value Value to match
+     * @param boolean $all Return all matches or just single (default is single)
+     * @return mixed Match(es) if found, null if not
+     */
+    public function find($property, $value, $all = false)
+    {
+        $match = null;
+        $matches = array();
+        foreach ($this->data as $item) {
+            if (is_object($item) && $item instanceof \Modler\Model) {
+                if ($item->isProperty($property)) {
+                    $match = $item->$property;
+                }
+            } elseif (is_object($item)) {
+                if (isset($item->$property)) {
+                    $match = $item->$property;
+                }
+            } elseif (is_array($item)) {
+                $match = $item[$property];
+            } else {
+                $match = $item;
+            }
+            if ($match == $value) {
+                if ($all === true) {
+                    $matches[] = $item;
+                } else {
+                    return $item;
+                }
+            }
+        }
+        return ($all === true) ? $matches : null;
+    }
 }

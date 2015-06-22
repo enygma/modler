@@ -4,6 +4,10 @@ namespace Modler;
 class TestModel extends \Modler\Model
 {
     protected $properties = array(
+        'id' => array(
+            'description' => 'ID',
+            'type' => 'integer'
+        ),
         'test' => array(
             'description' => 'Test Property'
         ),

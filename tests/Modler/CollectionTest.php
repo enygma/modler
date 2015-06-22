@@ -246,4 +246,70 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('foo', $collection[3]->test);
         $this->assertEquals('quux', $collection[5]->test);
     }
+
+    /**
+     * Test the "find" when the collection contains Modler models
+     */
+    public function testFindModlerModels()
+    {
+        for ($i = 1; $i <= 10; $i++) {
+            $model = new TestModel(['id' => $i]);
+            $this->collection->add($model);
+        }
+        $result = $this->collection->find('id', 2);
+        $this->assertEquals(2, $result->id);
+    }
+
+    /**
+     * Test the "find" when the collection contains regular objects
+     */
+    public function testFndSimpleObject()
+    {
+        for ($i = 1; $i <= 10; $i++) {
+            $model = new \stdClass();
+            $model->id = $i;
+            $this->collection->add($model);
+        }
+        $result = $this->collection->find('id', 2);
+        $this->assertEquals(2, $result->id);
+    }
+
+    /**
+     * Test the "find" when the collection contains arrays
+     */
+    public function testFindArrays()
+    {
+        for ($i = 1; $i <= 10; $i++) {
+            $item = array('id' => $i);
+            $this->collection->add($item);
+        }
+        $result = $this->collection->find('id', 2);
+        $this->assertEquals(2, $result['id']);
+    }
+
+    /**
+     * Test the "find" when the collection contains just values
+     */
+    public function testFindJustValues()
+    {
+        for ($i = 1; $i <= 10; $i++) {
+            $this->collection->add($i);
+        }
+        $result = $this->collection->find('id', 2);
+        $this->assertEquals(2, $result);
+    }
+
+    /**
+     * Test the "find" when the "all" option is given
+     *     telling it to return a set not just the first match
+     */
+    public function testFindMatchAll()
+    {
+        $this->collection->add(new TestModel(['id' => 2]));
+        $this->collection->add(new TestModel(['id' => 1]));
+        $this->collection->add(new TestModel(['id' => 2]));
+
+        $result = $this->collection->find('id', 2, true);
+        $this->assertEquals(2, count($result));
+    }
 }
