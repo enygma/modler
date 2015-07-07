@@ -43,7 +43,7 @@ class Model
         }
         $property = $this->properties[$name];
         if (!isset($property['guarded'])
-            || (isset($property['guarded']) && $property['guarded'] = false)
+            || (isset($property['guarded']) && $property['guarded'] === false)
         ) {
             $this->values[$name] = $value;
         }
