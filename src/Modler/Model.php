@@ -223,7 +223,7 @@ class Model
                 $property = $this->properties[$name];
                 if ($enforceGuard === true) {
                     if (!isset($property['guarded'])
-                        || (isset($property['guarded']) && $property['guarded'] = false)
+                        || (isset($property['guarded']) && $property['guarded'] === false)
                     ) {
                         $this->setValue($name, $value);
                     }
