@@ -18,6 +18,13 @@ class Model
     protected $values = array();
 
     /**
+     * Error messages for the current model
+     *
+     * @var array
+     */
+    protected $messages = [];
+
+    /**
      * Init the object and load data if given
      *
      * @param array $data Data to load [optional]
@@ -71,6 +78,27 @@ class Model
         // If not, probably just a value - return that (or null)
         return (array_key_exists($name, $this->values))
             ? $this->values[$name] : null;
+    }
+
+    /**
+     * Set an error message for a given field
+     *
+     * @param string Field name
+     * @param string Error message
+     */
+    public function setMessage($field, $message)
+    {
+        $this->messages[$field] = $message;
+    }
+
+    /**
+     * Get the current set of error messages
+     *
+     * @return array Current error message set
+     */
+    public function getMessages()
+    {
+        return $this->messages;
     }
 
     /**
