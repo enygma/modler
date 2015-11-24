@@ -102,6 +102,17 @@ class Model
     }
 
     /**
+     * Get the mesage for a provided field
+     *
+     * @param string $field Field name
+     * @return mixed Either the string message or null if not found
+     */
+    public function getMessage($field)
+    {
+      return (isset($this->messages[$field])) ? $this->messages[$field] : null;
+    }
+
+    /**
      * Handle a relational mapping in a model
      *
      * @param array $property Property configuration
@@ -299,7 +310,12 @@ class Model
             $validateMethod = 'validate'.ucwords(strtolower($name));
             if (method_exists($this, $validateMethod) && isset($this->values[$name])) {
                 if ($this->$validateMethod($this->values[$name]) === false) {
-                    throw new \InvalidArgumentException('Invalid value for property "'.$name.'"!');
+                    // See if we have a custom message
+                    $msg = $this->getMessage($name);
+                    if ($msg === null) {
+                      $msg = 'Invalid value for property "'.$name.'"!';
+                    }
+                    throw new \InvalidArgumentException($msg);
                 }
             }
         }
