@@ -35,6 +35,16 @@ class Model
             $this->load($data);
         }
     }
+    
+    /**
+     * Checks if a given property is set on the model.
+     * 
+     * @param string $name Property name
+     */
+    public function __isset($name) 
+    {
+        return array_key_exists($name, $this->properties);    
+    }
 
     /**
      * Set the value of a property
