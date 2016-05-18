@@ -35,15 +35,15 @@ class Model
             $this->load($data);
         }
     }
-    
+
     /**
      * Checks if a given property is set on the model.
-     * 
+     *
      * @param string $name Property name
      */
-    public function __isset($name) 
+    public function __isset($name)
     {
-        return array_key_exists($name, $this->properties);    
+        return array_key_exists($name, $this->properties);
     }
 
     /**
@@ -270,6 +270,12 @@ class Model
         {
             if (array_key_exists($name, $this->properties)) {
                 $property = $this->properties[$name];
+
+                $method = 'load'.ucwords($name);
+                if (method_exists($this, $method) == true) {
+                    $value = $this->$method($value);
+                }
+
                 if ($enforceGuard === true) {
                     if (!isset($property['guarded'])
                         || (isset($property['guarded']) && $property['guarded'] === false)
