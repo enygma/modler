@@ -8,14 +8,10 @@ pieces of functionality.
 
 ## Installation
 
-You can install the library via Composer (in your `composer.json` file):
+You can install the library via Composer using the `require` command:
 
 ```
-{
-    "require": {
-        "enygma/modler": "1.*"
-    }
-}
+composer require enygma/modler
 ```
 
 ## Classes
@@ -594,5 +590,3 @@ $collection->order(\Modler\Collection::SORT_DESC, 'test');
 print_r($collection->toArray());
 ?>
 ```
-
-
